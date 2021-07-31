@@ -1,10 +1,7 @@
 ﻿using GroceryStoreAPI.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -35,11 +32,6 @@ namespace GroceryStoreAPI
         {
             logger.LogDebug("Getting all users");
             return storeRepo.Get();
-            //return new StoreUser[]
-            //{
-            //    new StoreUser() { id=123, name="name123" },
-            //    new StoreUser() { id=234, name="name234" },
-            //};
         }
 
         // GET /GroceryStore/5
@@ -47,19 +39,17 @@ namespace GroceryStoreAPI
         public string Get(int id)
         {
             logger.LogDebug("Getting id={id}", id);
-            return "some name";
+            return storeRepo.Get(id);
         }
-
-        int fakeId = 0;
 
         // POST /GroceryStore
         [HttpPost]
         public int Post([FromBody] string name)
         {
             logger.LogDebug("Posting name={name}", name);
-            ++fakeId;
-            logger.LogDebug("Posting name={name} returns id={id}", name, fakeId);
-            return fakeId;
+            int newId = storeRepo.Post(name);
+            logger.LogDebug("Posting name={name} returns id={id}", name, newId);
+            return newId;
         }
 
         // PUT /GroceryStore/5
@@ -73,7 +63,7 @@ namespace GroceryStoreAPI
         public bool Put(int id, [FromBody] string name)
         {
             logger.LogDebug("Putting id={id}, value={name}", id, name);
-            return true;
+            return storeRepo.Put(id, name);
         }
 
         // DELETE /GroceryStore/5
@@ -84,7 +74,7 @@ namespace GroceryStoreAPI
         public bool Delete(int id)
         {
             logger.LogDebug("Deleting id={id}", id);
-            return true;
+            return storeRepo.Delete(id);
         }
     }
 }

@@ -4,6 +4,16 @@
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
   </PropertyGroup>
   <ItemGroup>
+    <Content Remove="database.aswas.json" />
+    <Content Remove="GroceryStore.postman_collection.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="database.aswas.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="GroceryStore.postman_collection.json" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 </Project>
