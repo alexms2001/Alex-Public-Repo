@@ -19,6 +19,11 @@ namespace GroceryStoreAPI
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .ConfigureLogging(logging =>
+                    {
+                        logging.ClearProviders();
+                        logging.AddDebug();
+                    })
                 .UseStartup<Startup>();
     }
 }
