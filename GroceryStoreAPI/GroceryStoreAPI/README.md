@@ -14,16 +14,3 @@ Implement the above listed requirements in a manner you see fitting.  Demonstrat
 
 # Publish
 Publish your implementation under your own github account.
-
-From Alex Shvedov:
-
-The solution uses .NET 5.0, but should compile/run under at least .NET Core 3.2 (I did not use records, StoreUser etc. are classes).
-
-GroceryStore.postman_collection.json is added to the project; it can be imported into postman and used for debugging/testing.
-
-Test cases are cheap and dirty: no edge cases, only successes are Assert'ed etc. Forgive me.
-
-That's pretty much all
-
-Alex Shvedov
-07/31/2021 8:06 PM EST

@@ -8,6 +8,9 @@
     <Content Remove="GroceryStore.postman_collection.json" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="README.md" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="database.aswas.json">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>

@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace GroceryStoreAPI
 {
+    /// <summary>
+    /// Logic here: do NOTHING in the controller, make it a thin wrapper over
+    /// the service[s]. Even exceptions can be caught in a centralized manner.
+    /// </summary>
     [Route("[controller]")]
     [ApiController]
     public class GroceryStoreController : ControllerBase
@@ -34,7 +36,7 @@ namespace GroceryStoreAPI
             return storeRepo.Get();
         }
 
-        // GET /GroceryStore/5
+        // GET /GroceryStore/2
         [HttpGet("{id}")]
         public string Get(int id)
         {
@@ -52,7 +54,7 @@ namespace GroceryStoreAPI
             return newId;
         }
 
-        // PUT /GroceryStore/5
+        // PUT /GroceryStore/2
         /// <summary>
         /// Return true on success, false on failure
         /// </summary>
@@ -66,7 +68,7 @@ namespace GroceryStoreAPI
             return storeRepo.Put(id, name);
         }
 
-        // DELETE /GroceryStore/5
+        // DELETE /GroceryStore/2
         /// <summary>
         /// Return true on success, false on failure
         /// </summary>

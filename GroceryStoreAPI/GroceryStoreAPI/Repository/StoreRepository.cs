@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 
 namespace GroceryStoreAPI.Repository
 {
+    /// <summary>
+    /// Mock implementation of IStoreRepository. Several things that should
+    /// and would be async (in a non-mock case) are not...
+    /// </summary>
     public class StoreRepository : IStoreRepository
     {
         private const string mockDbFilePath = "database.json";
@@ -17,7 +21,7 @@ namespace GroceryStoreAPI.Repository
 
         private Dictionary<int, string> mockDatabase = new Dictionary<int, string>();
 
-        private int currId = int.MinValue;
+        private static int currId = int.MinValue;
 
         /// <summary>
         /// Atomic operation, thread-safe:
@@ -48,13 +52,11 @@ namespace GroceryStoreAPI.Repository
                 }
                 else
                 {
-                    logger.LogError("Initial data is not valid, using what's possible.");
+                    logger?.LogError("Initial data is not valid, using what's possible.");
                 }
             }
 
-            string jsonForDict = JsonConvert.SerializeObject(mockDatabase);
-
-            logger.LogDebug("StoreRepository was initialized.");
+            logger?.LogDebug("StoreRepository was initialized.");
         }
 
         public IEnumerable<StoreUser> Get()
@@ -65,13 +67,13 @@ namespace GroceryStoreAPI.Repository
                 allUsers.Add(new StoreUser() { id = id, name = mockDatabase[id] });
             }
 
-            logger.LogDebug("StoreRepository.Get called");
+            logger?.LogDebug("StoreRepository.Get called");
             return allUsers;
         }
 
         public string Get(int id)
         {
-            logger.LogDebug("StoreRepository.Get called");
+            logger?.LogDebug("StoreRepository.Get called");
             string result = "no-such-user";
             if (mockDatabase.ContainsKey(id))
             {
@@ -82,10 +84,10 @@ namespace GroceryStoreAPI.Repository
 
         /// <summary>
         /// Have to go from dictionary to list and back just b/c of initial format of mock database.json
-        /// so that new runs can start from both initial and modified formats.
+        /// so that new runs can start from both initial and modified database.json file.
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="name"></param>
+        /// <param name="id">User id.</param>
+        /// <param name="name">User name.</param>
         private void SaveUpdatedDb()
         {
             lock (lockForPost)
@@ -105,15 +107,16 @@ namespace GroceryStoreAPI.Repository
         /// Should be async with File.WriteAllTextAsync, but I have to lock, and
         /// await is not available inside a critical section aka lock...
         /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
+        /// <param name="name">User name.</param>
+        /// <returns>True on success, false otherwise.</returns>
         public int Post(string name)
         {
-            logger.LogDebug("StoreRepository.Post called");
+            logger?.LogDebug("StoreRepository.Post called");
             int newId;
             do
             {
-                // hopefully, one loop will be enough...
+                // currId is static, so use interlocked increment
+                // Loop is a precaution, hopefully, one loop will be enough.
                 newId = NewCurrId;
             } while (mockDatabase.ContainsKey(newId));
             mockDatabase[newId] = name;
@@ -130,7 +133,7 @@ namespace GroceryStoreAPI.Repository
         /// <returns></returns>
         public bool Put(int id, string name)
         {
-            logger.LogDebug("StoreRepository.Put called");
+            logger?.LogDebug("StoreRepository.Put called");
             if(mockDatabase.ContainsKey(id))
             {
                 mockDatabase[id] = name;
@@ -147,7 +150,7 @@ namespace GroceryStoreAPI.Repository
         /// <returns></returns>
         public bool Delete(int id)
         {
-            logger.LogDebug("StoreRepository.Delete called");
+            logger?.LogDebug("StoreRepository.Delete called");
             if (mockDatabase.ContainsKey(id))
             {
                 string name = mockDatabase[id];
