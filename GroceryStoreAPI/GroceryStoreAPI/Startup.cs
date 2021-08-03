@@ -5,6 +5,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
+//using Microsoft.OpenApi.Models;
+//using Swashbuckle.AspNetCore.Swagger;
+//using Swashbuckle.AspNetCore.SwaggerGen;
+
 namespace GroceryStoreAPI
 {
     public class Startup
@@ -31,6 +35,12 @@ namespace GroceryStoreAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            //services.AddSwaggerGen(c =>
+            //{
+            //    c.SwaggerDoc(name: "v1", new OpenApiInfo { Title = "GroceryStoreAPI", Version = "v1" });
+            //});
+            services.AddSwaggerDocument();
+
             services.AddSingleton<IStoreRepository, StoreRepository>();
         }
 
@@ -49,6 +59,13 @@ namespace GroceryStoreAPI
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            //app.UseSwagger();
+            ////app.UseSwaggerUI(c => {
+            ////    c.SwaggerEndpoint("/swagger/v1/swagger.json", "GsAPI v1");
+            ////});
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
 
             app.UseRouting();
 
